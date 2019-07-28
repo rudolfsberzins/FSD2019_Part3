@@ -1,22 +1,22 @@
-const express = require("express")
-const app = express()
-const bodyParser = require("body-parser")
-const cors = require("cors")
+const express = require("express");
+const app = express();
+const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const requestLogger = (request, response, next) => {
-  console.log("Method:", request.method)
-  console.log("Path:  ", request.path)
-  console.log("Body:  ", request.body)
-  console.log("---")
-  next()
-}
+  console.log("Method:", request.method);
+  console.log("Path:  ", request.path);
+  console.log("Body:  ", request.body);
+  console.log("---");
+  next();
+};
 
+app.use(bodyParser.json());
+app.use(requestLogger);
+app.use(cors());
 
-app.use(bodyParser.json())
-app.use(requestLogger)
-app.use(cors())
-
-let notes = [{
+let notes = [
+  {
     id: 1,
     content: "HTML is easy",
     date: "2019-05-30T17:30:31.098Z",
@@ -34,40 +34,40 @@ let notes = [{
     date: "2019-05-30T19:20:14.298Z",
     important: true
   }
-]
+];
 
 const generateId = () => {
-  const maxId = notes.length > 0 ? Math.max(...notes.map(n => n.id)) : 0
-  return maxId + 1
-}
+  const maxId = notes.length > 0 ? Math.max(...notes.map(n => n.id)) : 0;
+  return maxId + 1;
+};
 
 app.get("/", (req, res) => {
-  res.send("<h1>Hello World!</h1>")
-})
+  res.send("<h1>Hello World!</h1>");
+});
 
 app.get("/notes", (req, res) => {
-  res.json(notes)
-})
+  res.json(notes);
+});
 
 app.get("/notes/:id", (request, response) => {
-  const id = Number(request.params.id)
-  console.log(id)
-  const note = notes.find(note => note.id === id)
-  console.log(note)
+  const id = Number(request.params.id);
+  console.log(id);
+  const note = notes.find(note => note.id === id);
+  console.log(note);
   if (note) {
-    response.json(note)
+    response.json(note);
   } else {
-    response.status(404).end()
+    response.status(404).end();
   }
-})
+});
 
 app.post("/notes", (request, response) => {
-  const body = request.body
+  const body = request.body;
 
   if (!body.content) {
     return response.status(400).json({
       error: "content missing"
-    })
+    });
   }
 
   const note = {
@@ -75,28 +75,28 @@ app.post("/notes", (request, response) => {
     important: body.important || false,
     date: new Date(),
     id: generateId()
-  }
+  };
 
-  notes = notes.concat(note)
+  notes = notes.concat(note);
 
-  response.json(note)
-})
+  response.json(note);
+});
 
 app.delete("/notes/:id", (request, response) => {
-  const id = Number(request.params.id)
-  notes = notes.filter(note => note.id !== id)
+  const id = Number(request.params.id);
+  notes = notes.filter(note => note.id !== id);
 
-  response.status(204).end()
-})
+  response.status(204).end();
+});
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({
     error: "unknown endpoint"
-  })
-}
-app.use(unknownEndpoint)
+  });
+};
+app.use(unknownEndpoint);
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+  console.log(`Server running on port ${PORT}`);
+});
