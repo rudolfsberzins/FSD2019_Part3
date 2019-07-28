@@ -6,6 +6,10 @@
   "scripts": {
     "start": "node index.js",
     "watch": "nodemon index.js",
+    "build:ui": "rm -rf build && cd ../fullstackdev2019/part2 && yarn build --prod && cp -r build ../../FSD2019_Part3/",
+    "deploy": "git push heroku master",
+    "deploy:full": "yarn build:ui && git add . && git commit -m uibuild && git push && yarn deploy",
+    "logs:prod": "heroku logs --tail",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Rudolfs Berzins",
