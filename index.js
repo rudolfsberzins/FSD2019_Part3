@@ -46,11 +46,11 @@ app.get("/", (req, res) => {
   res.send("<h1>Hello World!</h1>");
 });
 
-app.get("/notes", (req, res) => {
+app.get("/api/notes", (req, res) => {
   res.json(notes);
 });
 
-app.get("/notes/:id", (request, response) => {
+app.get("/api/notes/:id", (request, response) => {
   const id = Number(request.params.id);
   console.log(id);
   const note = notes.find(note => note.id === id);
@@ -62,7 +62,7 @@ app.get("/notes/:id", (request, response) => {
   }
 });
 
-app.post("/notes", (request, response) => {
+app.post("/api/notes", (request, response) => {
   const body = request.body;
 
   if (!body.content) {
@@ -83,7 +83,7 @@ app.post("/notes", (request, response) => {
   response.json(note);
 });
 
-app.delete("/notes/:id", (request, response) => {
+app.delete("/api/notes/:id", (request, response) => {
   const id = Number(request.params.id);
   notes = notes.filter(note => note.id !== id);
 
