@@ -1,9 +1,9 @@
-require('dotenv').config()
+require("dotenv").config()
 const express = require("express")
 const app = express()
 const bodyParser = require("body-parser")
 const cors = require("cors")
-const Note = require('./models/note')
+const Note = require("./models/note")
 
 const requestLogger = (request, response, next) => {
   console.log("Method:", request.method)
@@ -18,25 +18,25 @@ app.use(bodyParser.json())
 app.use(requestLogger)
 app.use(cors())
 
-let notes = [{
-    id: 1,
-    content: "HTML is easy",
-    date: "2019-05-30T17:30:31.098Z",
-    important: true
-  },
-  {
-    id: 2,
-    content: "Browser can execute only Javascript",
-    date: "2019-05-30T18:39:34.091Z",
-    important: false
-  },
-  {
-    id: 3,
-    content: "GET and POST are the most important methods of HTTP protocol",
-    date: "2019-05-30T19:20:14.298Z",
-    important: true
-  }
-]
+// let notes = [{
+//     id: 1,
+//     content: "HTML is easy",
+//     date: "2019-05-30T17:30:31.098Z",
+//     important: true
+//   },
+//   {
+//     id: 2,
+//     content: "Browser can execute only Javascript",
+//     date: "2019-05-30T18:39:34.091Z",
+//     important: false
+//   },
+//   {
+//     id: 3,
+//     content: "GET and POST are the most important methods of HTTP protocol",
+//     date: "2019-05-30T19:20:14.298Z",
+//     important: true
+//   }
+// ]
 
 app.get("/", (req, res) => {
   res.send("<h1>Hello World!</h1>")
@@ -48,7 +48,7 @@ app.get("/api/notes", (req, res) => {
   })
 })
 
-app.get('/api/notes/:id', (request, response, next) => {
+app.get("/api/notes/:id", (request, response, next) => {
   Note.findById(request.params.id)
     .then(note => {
       if (note) {
@@ -60,12 +60,12 @@ app.get('/api/notes/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-app.post('/api/notes', (request, response, next) => {
+app.post("/api/notes", (request, response, next) => {
   const body = request.body
 
   if (body.content === undefined) {
     return response.status(400).json({
-      error: 'content missing'
+      error: "content missing"
     })
   }
 
@@ -88,7 +88,7 @@ app.delete("/api/notes/:id", (request, response, next) => {
   }).catch(error => next(error))
 })
 
-app.put('/api/notes/:id', (request, response, next) => {
+app.put("/api/notes/:id", (request, response, next) => {
   const body = request.body
 
   const note = {
@@ -113,11 +113,11 @@ app.use(unknownEndpoint)
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
 
-  if (error.name === 'CastError' && error.kind == 'ObjectId') {
+  if (error.name === "CastError" && error.kind === "ObjectId") {
     return response.status(400).send({
-      error: 'malformatted id'
+      error: "malformatted id"
     })
-  } else if (error.name === 'ValidationError') {
+  } else if (error.name === "ValidationError") {
     return response.status(400).json({
       error: error.message
     })
