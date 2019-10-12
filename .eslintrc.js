@@ -2,7 +2,8 @@ module.exports = {
     'env': {
         'browser': true,
         'commonjs': true,
-        'es6': true
+        'es6': true,
+        'jest': true
     },
     'extends': 'eslint:recommended',
     'globals': {
@@ -23,23 +24,23 @@ module.exports = {
         ],
         'quotes': [
             'error',
-            'double'
+            'single'
         ],
         'semi': [
             'error',
             'never'
         ],
-        "eqeqeq": "error",
-        "no-trailing-spaces": "error",
-        "object-curly-spacing": [
-            "error", "always"
+        'eqeqeq': 'error',
+        'no-trailing-spaces': 'error',
+        'object-curly-spacing': [
+            'error', 'always'
         ],
-        "arrow-spacing": [
-            "error", {
-                "before": true,
-                "after": true
+        'arrow-spacing': [
+            'error', {
+                'before': true,
+                'after': true
             }
         ],
-        "no-console": 0
+        'no-console': 0
     }
 }
